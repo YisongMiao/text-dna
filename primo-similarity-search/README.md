@@ -1,7 +1,7 @@
 PRIMO Similarity Search
 =======================
 
-Yisong and Yihao would like to thank the PRIMO Team for this great codebase!
+Yisong and Yihao would like to thank the PRIMO Team for this great codebase! https://github.com/uwmisl/primo-similarity-search
 
 Setup
 -----
