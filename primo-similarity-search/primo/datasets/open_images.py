@@ -30,7 +30,9 @@ class OpenImagesTrain(Dataset):
 
         while True:
 
-            f_a, f_b = np.random.choice(files, 2, replace=False)
+            # f_a, f_b = np.random.choice(files, 2, replace=False)
+            f_a, f_b = np.random.choice(files, 2, replace=True)
+
             sys.stdout.write("switching to %s and %s\n" % (f_a, f_b))
 
             df1 = pd.read_hdf(os.path.join(feature_dir, f_a))
