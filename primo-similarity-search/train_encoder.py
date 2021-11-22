@@ -12,13 +12,40 @@ cupyck_sess = cupyck.GPUSession(max_seqlen=200, nblocks=1000, nthreads=128)
 
 simulator = primo.models.Simulator(cupyck_sess)
 
+
+
+# # TODO: Yisong: Config for Image ...
+# print 'Loading training ... '
+# train_dataset = primo.datasets.OpenImagesTrain(
+#     '../data/open_images/train/', switch_every=10**5
+# )
+#
+# print 'Loading validation ... '
+# val_dataset = primo.datasets.OpenImagesVal('../data/open_images/validation/')
+#
+# def keras_batch_generator(dataset_batch_generator, sim_thresh):
+#     while True:
+#         indices, pairs = next(dataset_batch_generator)
+#         distances = np.sqrt(np.square(pairs[:,0,:] - pairs[:,1,:]).sum(1))
+#         similar = (distances < sim_thresh).astype(int)
+#         yield pairs, similar
+#
+# # To see how this value was derived, please consult the Materials and Methods subsection under Feature Extraction section.
+# sim_thresh = 75
+# # Intuitively determined:
+# encoder_train_batch_size = 100
+# encoder_val_batch_size = 2500
+# predictor_train_batch_size = 1000
+
+
+# TODO: Yisong: Config for Text ...
 print 'Loading training ... '
 train_dataset = primo.datasets.OpenImagesTrain(
-    '../data/open_images/train/', switch_every=10**5
+    '../data/open_sbert/train/', switch_every=10**5
 )
 
 print 'Loading validation ... '
-val_dataset = primo.datasets.OpenImagesVal('../data/open_images/validation/')
+val_dataset = primo.datasets.OpenImagesVal('../data/open_sbert/validation/')
 
 def keras_batch_generator(dataset_batch_generator, sim_thresh):
     while True:
@@ -33,6 +60,7 @@ sim_thresh = 75
 encoder_train_batch_size = 100
 encoder_val_batch_size = 2500
 predictor_train_batch_size = 1000
+
 
 print 'Defining train batches creation'
 encoder_train_batches = keras_batch_generator(
@@ -59,7 +87,8 @@ encoder_trainer.model.compile(tf.keras.optimizers.Adagrad(1e-3), 'binary_crossen
 print 'Start training ...'
 history = encoder_trainer.model.fit_generator(
     encoder_train_batches,
-    steps_per_epoch = 1000,
+    # steps_per_epoch = 1000,
+    steps_per_epoch = 100, # TODO: Yisong, change for text ...
     epochs = 100,
     callbacks = [
         encoder_trainer.refit_predictor(

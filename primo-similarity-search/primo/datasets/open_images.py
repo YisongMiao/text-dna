@@ -42,9 +42,11 @@ class OpenImagesTrain(Dataset):
             # TODO Yisong f_a and f_b should not necessairily have same size!
 
             # TODO Yisong: I understand, it is just a big pandas frame ...
-            df1 = pd.read_hdf(os.path.join(feature_dir, f_a))
+            # TODO Yisong: OK, we need to remove `df` for image data ...
+
+            df1 = pd.read_hdf(os.path.join(feature_dir, f_a), 'df')
             # 71971, 4096
-            df2 = pd.read_hdf(os.path.join(feature_dir, f_b))
+            df2 = pd.read_hdf(os.path.join(feature_dir, f_b), 'df')
             # 63646, 4096
 
             df = pd.concat([df1, df2])
@@ -64,7 +66,7 @@ class OpenImagesVal(Dataset):
     
     def __init__(self, val_path):
         feature_path = os.path.join(val_path, 'features/validation.h5')
-        self.df = pd.read_hdf(feature_path)
+        self.df = pd.read_hdf(feature_path, 'df')
         # 41620, 4096 df.
 
         print 'Done loading validation h5'
