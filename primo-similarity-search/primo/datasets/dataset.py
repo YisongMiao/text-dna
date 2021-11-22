@@ -22,6 +22,10 @@ class Dataset(object):
             while n_batch < batch_size:
                 chunk_ids, chunk_vals = next(pair_generator)
 
+                # TODO: Yisong: OK. It can be challenging. Perhaps we need to change.
+                # TODO: They use a completely random strategy. Ours is different. Text dataset comes with pairs already. It means that we need to shuffle them ...
+                # TODO: Yisong: we might need to change the sampling strategy. Their positive ratio is 8 %.
+
                 distances = np.sqrt(
                     np.square(chunk_vals[:,0] - chunk_vals[:,1]).sum(1)
                 )

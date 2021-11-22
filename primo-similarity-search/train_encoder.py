@@ -34,7 +34,7 @@ encoder_train_batch_size = 100
 encoder_val_batch_size = 2500
 predictor_train_batch_size = 1000
 
-print 'Creating train batches'
+print 'Defining train batches creation'
 encoder_train_batches = keras_batch_generator(
     train_dataset.balanced_pairs(encoder_train_batch_size, sim_thresh),
     sim_thresh
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     print 'Done'
 
     print 'Saving encoder'
-    encoder.save('../data/models/encoder_model-self.h5')
+    encoder.save('../data/models/encoder_model-self-1.15.h5')
 
     print 'Saving predictor'
     predictor.save('../data/models/predictor_model-self.h5')

@@ -47,6 +47,7 @@ class Encoder:
         # [2] - https://www.cs.toronto.edu/~frossard/post/vgg16/
         # [3] - https://github.com/kentsommer/VGG16-Image-Retrieval/blob/master/vgg16_example.py#L237
         #
+        # TODO Yisong: A remark. OK. Here is where we change the dimensions.
         "input_dim": 4096,
 
         # The feature region of our engineered DNA sequence is 80 nucleotides long.
@@ -70,6 +71,7 @@ class Encoder:
             setattr(self, arg, val)
 
         if model_path is None:
+            # TODO Yisong: A remark. OK, here is the neural network structure. Does not seem very complex :)
             self.model = tf.keras.Sequential([
                 layers.Dense(self.input_dim/2, activation = 'relu', input_shape=[self.input_dim]),
                 layers.Dense(self.output_len * 4, activation='relu'),
