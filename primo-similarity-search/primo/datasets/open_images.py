@@ -41,6 +41,7 @@ class OpenImagesTrain(Dataset):
 
             # TODO Yisong f_a and f_b should not necessairily have same size!
 
+            # TODO Yisong: I understand, it is just a big pandas frame ...
             df1 = pd.read_hdf(os.path.join(feature_dir, f_a))
             # 71971, 4096
             df2 = pd.read_hdf(os.path.join(feature_dir, f_b))
@@ -64,10 +65,14 @@ class OpenImagesVal(Dataset):
     def __init__(self, val_path):
         feature_path = os.path.join(val_path, 'features/validation.h5')
         self.df = pd.read_hdf(feature_path)
+        # 41620, 4096 df.
+
         print 'Done loading validation h5'
         
     def random_pairs(self, batch_size):
         n = len(self.df)
         while True:
             pairs = np.random.permutation(n)[:batch_size*2].reshape(-1,2)
+            # pairs: 2500, 2
+
             yield self.df.index.values[pairs], self.df.values[pairs]
