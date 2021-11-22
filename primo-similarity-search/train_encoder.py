@@ -76,9 +76,9 @@ if __name__ == '__main__':
     print 'Done'
 
     print 'Saving encoder'
-    encoder.save('../data/models/encoder_model.h5')
+    encoder.save('../data/models/encoder_model-self.h5')
 
     print 'Saving predictor'
-    predictor.save('../data/models/predictor_model.h5')
+    predictor.save('../data/models/predictor_model-self.h5')
 
 

@@ -33,6 +33,10 @@ class OpenImagesTrain(Dataset):
             # f_a, f_b = np.random.choice(files, 2, replace=False)
             f_a, f_b = np.random.choice(files, 2, replace=True)
 
+            # TODO Yisong
+            # Seems like we should change here!
+
+            # switching to train_0.h5 and train_0.h5. I see.
             sys.stdout.write("switching to %s and %s\n" % (f_a, f_b))
 
             df1 = pd.read_hdf(os.path.join(feature_dir, f_a))
