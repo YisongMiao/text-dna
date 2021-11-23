@@ -5,8 +5,11 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-yields = pd.read_hdf('../data/simulation/extended_targets/callie_janelle.h5')
-dists = pd.read_hdf('../data/extended_targets/query_target_dists.h5')
+# yields = pd.read_hdf('../data/simulation/extended_targets/callie_janelle.h5')
+# dists = pd.read_hdf('../data/extended_targets/query_target_dists.h5')
+
+yields = pd.read_hdf('../data/simulation/extended_targets/plain-self.h5')
+dists = pd.read_hdf('../data/targets/query_target_dists-text.h5')
 
 df = yields.join(dists['callie_janelle'].rename('euclidean_distance'))
 
