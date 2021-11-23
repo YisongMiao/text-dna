@@ -8,10 +8,14 @@ import matplotlib.pyplot as plt
 # yields = pd.read_hdf('../data/simulation/extended_targets/callie_janelle.h5')
 # dists = pd.read_hdf('../data/extended_targets/query_target_dists.h5')
 
-yields = pd.read_hdf('../data/simulation/extended_targets/plain-self.h5')
+# yields = pd.read_hdf('../data/simulation/extended_targets/cat-self.h5')
+yields = pd.read_hdf('../data/simulation/extended_targets/callie_janelle.h5')
+
+
 dists = pd.read_hdf('../data/targets/query_target_dists-text.h5')
 
-df = yields.join(dists['callie_janelle'].rename('euclidean_distance'))
+# df = yields.join(dists['callie_janelle'].rename('euclidean_distance'))
+df = yields.join(dists['cat'].rename('euclidean_distance'))
 
 
 # Color here represents density.
@@ -19,7 +23,7 @@ df = yields.join(dists['callie_janelle'].rename('euclidean_distance'))
 plt.hexbin(df.euclidean_distance, df.duplex_yield, gridsize=50, bins='log')
 plt.show()
 
-thresholds = [75, 85, 95, 105]
+thresholds = [1.1, 1.2, 1.3, 1.4]
 bin_labels = np.array(
     ["$\leq%d$" % thresholds[0]]
     + ["(%d, %d]" % (a,b) for (a,b) in zip(thresholds,thresholds[1:])]
