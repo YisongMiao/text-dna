@@ -21,19 +21,24 @@ pd.DataFrame(
     '../data/queries/feature_seqs.h5', key='df', mode='w'
 )
 
-hosts = [
-    ("localhost", 2047),
-]
-
-
-client = cupyck.Client(hosts)
+# hosts = [
+#     ("localhost", 2047),
+# ]
+# client = cupyck.Client(hosts)
 
 cupyck_sess = cupyck.GPUSession(max_seqlen=200, nblocks=1024, nthreads=128)
 
 simulator = primo.models.Simulator(cupyck_sess)
 
 target_seqs = pd.read_hdf('../data/extended_targets/feature_seqs.h5')
+# (5577710, 1)
+# Column Name: 'FeatureSequence'
+
 query_seqs = pd.read_hdf('../data/queries/feature_seqs.h5')
+# Shape: (3, 1)
+# Index([u'callie_janelle', u'luis_lego', u'yuan_taipei'], dtype='object')
+# OK. I should also design such structure.
+
 
 pairs = (target_seqs
  .rename(columns={'FeatureSequence':'target_features'})

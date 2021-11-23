@@ -50,6 +50,18 @@ The training of encoder is where changes happen. We have to customize many thing
 
 
 
+
+
+Before simulation we need to prepare the DNA sequences using our trained encoder. 
+
+The code is [encode_query_target.py](encode_query_target.py)
+
+
+
+
+
+
+
 For simulation, we use `queries` and `targets`. Their data structure look like this:
 
 ```
@@ -69,6 +81,10 @@ The code is [simulation.py](simulation.py).
 
 
 
+
+## Reflection
+
+Nov 23: Perhaps we should train the encoder model on a larger dataset (e.g. SNLI), and evaluate it on SST?
 
 
 
