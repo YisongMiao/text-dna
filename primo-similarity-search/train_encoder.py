@@ -55,7 +55,7 @@ def keras_batch_generator(dataset_batch_generator, sim_thresh):
         yield pairs, similar
 
 # To see how this value was derived, please consult the Materials and Methods subsection under Feature Extraction section.
-sim_thresh = 1.2
+sim_thresh = 1.3
 # Intuitively determined:
 encoder_train_batch_size = 100
 encoder_val_batch_size = 2500
