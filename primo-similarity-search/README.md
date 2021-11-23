@@ -3,6 +3,75 @@ PRIMO Similarity Search
 
 Yisong and Yihao would like to thank the PRIMO Team for this great codebase! https://github.com/uwmisl/primo-similarity-search
 
+
+
+## Dataset Flow
+
+OK, we understand that the data structure. 
+
+
+
+We basically have these directories under `/data`
+
+```
+305M    extended_targets
+55M     metadata
+105M    models
+8.2G    open_images
+39M     open_sbert
+860K    queries
+176M    sequencing
+82M     simulation
+98M     targets
+```
+
+
+
+For training of image (VGG based) and text (BERT based), we have the data under `open_images` and `open_sbert`  respectively. 
+
+```
+ysmiao@next-dgx1-02:~/text-dna/data$ ls open_images/
+train  validation
+ysmiao@next-dgx1-02:~/text-dna/data$ ls open_sbert/
+train  validation
+```
+
+
+
+For the preparation of `open_sbert`, the text is embedded using [sbert.py](sbert.py)
+
+
+
+The training of predictor is almost the same as image dataset. Because it only takes synthesized data. See [train_predictor.py](train_predictor.py)
+
+
+
+The training of encoder is where changes happen. We have to customize many things. See [train_encoder.py](train_encoder.py)
+
+
+
+For simulation, we use `queries` and `targets`. Their data structure look like this:
+
+```
+ysmiao@next-dgx1-02:~/text-dna/data/queries$ du -sh *
+13K     feature_seqs.h5
+57K     features.h5
+790K    images
+ysmiao@next-dgx1-02:~/text-dna/data/targets$ du -sh *
+58M     feature_seqs.h5
+41M     query_target_dists.h5
+```
+
+
+
+The code is [simulation.py](simulation.py).
+
+
+
+
+
+
+
 Setup
 -----
 This repository comes with a Dockerfile which allows you to reproduce our
