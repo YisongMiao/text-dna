@@ -5,6 +5,27 @@ import pandas as pd
 import h5py
 
 
+def emb_queries():
+    queries = {
+        'plain': 'A plane is taking off.',
+        'woman': 'A woman is peeling a potato.',
+        'cat': 'The cat is licking a bottle.'
+    }
+
+    sentences_q = list(queries.values())
+    sentences_index = list(queries.keys())
+
+    embeddings = model.encode(sentences_q)
+
+    emb_df = pd.DataFrame(
+        data=embeddings,
+        index=sentences_index
+    )
+
+    fp = 'features.h5'
+    emb_df.to_hdf('../dna-data/{}'.format(fp), key='df')
+    print('Dumped to {}'.format(fp))
+
 
 def emb_sentences(sentences_all, index_list):
     batch_size = 128
@@ -44,7 +65,7 @@ def emb_sentences(sentences_all, index_list):
         index=index_list
     )
 
-    fp = 'valid_0.h5'
+    fp = 'targets.h5'
     emb_df.to_hdf('../dna-data/{}'.format(fp), key='df')
     print('Dumped to {}'.format(fp))
 
@@ -56,7 +77,7 @@ def emb_sentences(sentences_all, index_list):
 
 
 if __name__ == '__main__':
-    dataset = load_dataset("stsb_multi_mt", name="en", split="dev")
+    dataset = load_dataset("stsb_multi_mt", name="en", split="test")
     model = SentenceTransformer('all-MiniLM-L6-v2')
 
     # dataset.num_rows
@@ -73,3 +94,4 @@ if __name__ == '__main__':
     index_list = ['sentence1-{}'.format(i) for i in range(len(dataset['sentence1']))] + ['sentence2-{}'.format(i) for i in range(len(dataset['sentence2']))]
 
     emb_sentences(sentences_all, index_list)
+    # emb_queries()
