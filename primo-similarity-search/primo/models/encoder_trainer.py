@@ -41,6 +41,8 @@ class EncoderTrainer:
 
         # Swaps dimensions "1" and "2" (i.e. swapping DNA length and # of nucleotides)
         # This may change based on changes in the predictor (e.g. be unnessary)
+
+        # Yisong: OK, I understand. It flip the 2nd ...
         S_pairs_T = layers.Lambda(lambda S: tf.transpose(S, [0, 2, 1, 3]))(S_pairs)
 
         # y_h: Estimated output
