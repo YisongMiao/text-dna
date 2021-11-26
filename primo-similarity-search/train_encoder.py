@@ -84,6 +84,12 @@ encoder_val_batches = keras_batch_generator(
     sim_thresh
 )
 
+# TODO: Yisong, alternate it into balanced pair?
+encoder_val_batches = keras_batch_generator(
+    val_dataset.random_pairs(encoder_val_batch_size),
+    sim_thresh
+)
+
 print 'Models ...'
 predictor_train_batches = train_dataset.random_pairs(1000)
 
@@ -92,14 +98,15 @@ yield_predictor = primo.models.Predictor('../data/models/yield-model.h5')
 encoder_trainer = primo.models.EncoderTrainer(encoder, yield_predictor)
 
 print 'Compiling models ...'
-encoder_trainer.model.compile(tf.keras.optimizers.Adagrad(1e-3), 'binary_crossentropy')
+encoder_trainer.model.compile(optimizer=tf.keras.optimizers.Adagrad(1e-3), loss='binary_crossentropy', metrics=['accuracy'])
 
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
 
 filepath = "../data/models/encoder_model-mpnet-{epoch:02d}-{val_loss:.2f}.hdf5"
-mc = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=False, mode='min')
+mc = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=False, save_weights_only=False, mode='min')
 
 
+# TODO Yisong: add val_acc!
 print 'Start training ...'
 history = encoder_trainer.model.fit_generator(
     encoder_train_batches,
@@ -123,9 +130,8 @@ if __name__ == '__main__':
     print 'Done'
 
     print 'Saving encoder'
-    encoder.save('../data/models/encoder_model-self-text-mpnet.h5')
+    encoder.save('../data/models/encoder_model-mpnet.h5')
 
     print 'Saving predictor'
     yield_predictor.save('../data/models/predictor_model-self-text-mpnet.h5')
-
 
