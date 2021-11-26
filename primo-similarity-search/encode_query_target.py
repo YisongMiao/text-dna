@@ -10,22 +10,22 @@ import primo.datasets
 from tqdm.notebook import tqdm
 
 
-encoder = primo.models.Encoder('../data/models/encoder_model-self-text-best.h5')
+# encoder = primo.models.Encoder('../data/models/encoder_model-mpnet-07-0.08.hdf5')
+encoder = primo.models.Encoder('../data/models/encoder_model-self-text-mpnet.h5')
 
-query_features = pd.read_hdf('../data/queries/features-text.h5')
-
+query_features = pd.read_hdf('../data/queries/features-mpnet.h5')
 query_seqs = encoder.encode_feature_seqs(query_features)
 pd.DataFrame(
     query_seqs, index=query_features.index, columns=['FeatureSequence']
 ).to_hdf(
-    '../data/queries/feature_seqs-text.h5', key='df', mode='w'
+    '../data/queries/feature_seqs-mpnet.h5', key='df', mode='w'
 )
 
 # Memory-mapped file that caches the distances between targets and queries
-dist_store = pd.HDFStore('../data/targets/query_target_dists-text.h5', complevel=9, mode='w')
+dist_store = pd.HDFStore('../data/targets/query_target_dists-mpnet.h5', complevel=9, mode='w')
 
 # Memory-mapped file that stores the DNA sequence encodings of the target features.
-seq_store = pd.HDFStore('../data/targets/feature_seqs-text.h5', complevel=9, mode='w')
+seq_store = pd.HDFStore('../data/targets/feature_seqs-mpnet.h5', complevel=9, mode='w')
 
 try:
     # Target images are split up across 16 files.
@@ -53,7 +53,7 @@ try:
     #
     #     del target_features
 
-    target_features = pd.read_hdf('../data/open_sbert/targets/features/targets-text.h5')
+    target_features = pd.read_hdf('../data/open_sbert/targets/features/targets-mpnet.h5')
 
     # Dictionary that maps queries to euclidean distances for 1every pairing of query and target.
     distances = {}

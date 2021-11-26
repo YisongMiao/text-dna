@@ -1,5 +1,7 @@
 import abc
 import numpy as np
+# from scipy.spatial import distance
+import scipy
 
 class Dataset(object):
 

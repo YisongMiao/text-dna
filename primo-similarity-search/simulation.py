@@ -9,9 +9,9 @@ from tqdm.notebook import tqdm
 import cupyck
 import time
 
-encoder = primo.models.Encoder('../data/models/encoder_model-self-text.h5')
+encoder = primo.models.Encoder('../data/models/encoder_model-self-text-mpnet.h5')
 
-query_features = pd.read_hdf('../data/queries/features-text.h5')
+query_features = pd.read_hdf('../data/queries/features-mpnet.h5')
 
 query_seqs = encoder.encode_feature_seqs(query_features)
 
@@ -31,14 +31,17 @@ cupyck_sess = cupyck.GPUSession(max_seqlen=200, nblocks=1024, nthreads=128)
 simulator = primo.models.Simulator(cupyck_sess)
 
 
-target_seqs = pd.read_hdf('../data/extended_targets/feature_seqs.h5')
+# target_seqs = pd.read_hdf('../data/extended_targets/feature_seqs.h5')
 # target_seqs = pd.read_hdf('../data/targets/feature_seqs-text.h5')
+target_seqs = pd.read_hdf('../data/targets/feature_seqs-mpnet.h5')
 
 # (5577710, 1)
 # Column Name: 'FeatureSequence'
 
-query_seqs = pd.read_hdf('../data/queries/feature_seqs.h5')
+# query_seqs = pd.read_hdf('../data/queries/feature_seqs.h5')
 # query_seqs = pd.read_hdf('../data/queries/feature_seqs-text.h5')
+query_seqs = pd.read_hdf('../data/queries/feature_seqs-mpnet.h5')
+
 # Shape: (3, 1)
 # Index([u'callie_janelle', u'luis_lego', u'yuan_taipei'], dtype='object')
 # OK. I should also design such structure.
@@ -47,7 +50,7 @@ query_seqs = pd.read_hdf('../data/queries/feature_seqs.h5')
 
 pairs = (target_seqs
  .rename(columns={'FeatureSequence':'target_features'})
- .assign(query_features = query_seqs.loc['plain'].FeatureSequence)
+ .assign(query_features = query_seqs.loc['steve'].FeatureSequence)
 )
 
 # 4,000 here is just a memory-management batch size so that each progress chunk reports period of time.
@@ -64,7 +67,7 @@ nsplits = len(pairs) / split_size
 
 splits = pairs[:4000]
 
-result_store = pd.HDFStore('../data/simulation/extended_targets/replicate-self.h5', complevel=9, mode='w')
+result_store = pd.HDFStore('../data/simulation/extended_targets/steve-self.h5', complevel=9, mode='w')
 
 try:
     # results = simulator.simulate(splits)

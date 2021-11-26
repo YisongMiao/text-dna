@@ -41,13 +41,21 @@ simulator = primo.models.Simulator(cupyck_sess)
 
 
 # TODO: Yisong: Config for Text ...
+
+# print 'Loading training ... '
+# train_dataset = primo.datasets.OpenImagesTrain(
+#     '../data/open_sbert/train/', switch_every=10**5
+# )
+# print 'Loading validation ... '
+# val_dataset = primo.datasets.OpenImagesVal('../data/open_sbert/validation/')
+
 print 'Loading training ... '
 train_dataset = primo.datasets.OpenImagesTrain(
-    '../data/open_sbert/train/', switch_every=10**5
+    '../data/open_sbert/train-mpnet/', switch_every=10**5
 )
-
 print 'Loading validation ... '
-val_dataset = primo.datasets.OpenImagesVal('../data/open_sbert/validation/')
+val_dataset = primo.datasets.OpenImagesVal('../data/open_sbert/validation-mpnet/')
+
 
 def keras_batch_generator(dataset_batch_generator, sim_thresh):
     while True:
@@ -87,7 +95,9 @@ print 'Compiling models ...'
 encoder_trainer.model.compile(tf.keras.optimizers.Adagrad(1e-3), 'binary_crossentropy')
 
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
-mc = ModelCheckpoint('../data/models/encoder_model-self-text-best.h5', monitor='val_loss', mode='min', save_best_only=True)
+
+filepath = "../data/models/encoder_model-mpnet-{epoch:02d}-{val_loss:.2f}.hdf5"
+mc = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=False, mode='min')
 
 
 print 'Start training ...'
@@ -113,9 +123,9 @@ if __name__ == '__main__':
     print 'Done'
 
     print 'Saving encoder'
-    encoder.save('../data/models/encoder_model-self-text.h5')
+    encoder.save('../data/models/encoder_model-self-text-mpnet.h5')
 
     print 'Saving predictor'
-    yield_predictor.save('../data/models/predictor_model-self-text.h5')
+    yield_predictor.save('../data/models/predictor_model-self-text-mpnet.h5')
 
 

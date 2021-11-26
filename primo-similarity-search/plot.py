@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # yields = pd.read_hdf('../data/simulation/extended_targets/callie_janelle.h5')
 # dists = pd.read_hdf('../data/extended_targets/query_target_dists.h5')
 
-yields = pd.read_hdf('../data/simulation/extended_targets/plain-self.h5')
+yields = pd.read_hdf('../data/simulation/extended_targets/steve-self.h5')
 # yields = pd.read_hdf('../data/simulation/extended_targets/callie_janelle.h5')
 
 
