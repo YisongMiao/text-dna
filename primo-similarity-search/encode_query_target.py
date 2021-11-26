@@ -14,7 +14,6 @@ encoder = primo.models.Encoder('../data/models/encoder_model-self-text.h5')
 
 query_features = pd.read_hdf('../data/queries/features-text.h5')
 
-
 query_seqs = encoder.encode_feature_seqs(query_features)
 pd.DataFrame(
     query_seqs, index=query_features.index, columns=['FeatureSequence']
