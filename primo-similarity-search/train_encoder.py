@@ -1,6 +1,8 @@
 import tensorflow as tf
 from tensorflow.keras import layers
 
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
+
 import primo.models
 import primo.datasets
 
@@ -55,7 +57,7 @@ def keras_batch_generator(dataset_batch_generator, sim_thresh):
         yield pairs, similar
 
 # To see how this value was derived, please consult the Materials and Methods subsection under Feature Extraction section.
-sim_thresh = 1.3
+sim_thresh = 1.2
 # Intuitively determined:
 encoder_train_batch_size = 100
 encoder_val_batch_size = 2500
@@ -84,6 +86,10 @@ encoder_trainer = primo.models.EncoderTrainer(encoder, yield_predictor)
 print 'Compiling models ...'
 encoder_trainer.model.compile(tf.keras.optimizers.Adagrad(1e-3), 'binary_crossentropy')
 
+es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
+mc = ModelCheckpoint('../data/models/encoder_model-self-text-best.h5', monitor='val_loss', mode='min', save_best_only=True)
+
+
 print 'Start training ...'
 history = encoder_trainer.model.fit_generator(
     encoder_train_batches,
@@ -93,7 +99,9 @@ history = encoder_trainer.model.fit_generator(
     callbacks = [
         encoder_trainer.refit_predictor(
             predictor_train_batches, simulator, refit_every=1, refit_epochs=10
-        )
+        ),
+        es,
+        mc
     ],
     validation_data = encoder_val_batches,
     validation_steps = 1,
