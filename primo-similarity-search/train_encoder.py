@@ -17,45 +17,13 @@ simulator = primo.models.Simulator(cupyck_sess)
 
 
 # # TODO: Yisong: Config for Image ...
-# print 'Loading training ... '
-# train_dataset = primo.datasets.OpenImagesTrain(
-#     '../data/open_images/train/', switch_every=10**5
-# )
-#
-# print 'Loading validation ... '
-# val_dataset = primo.datasets.OpenImagesVal('../data/open_images/validation/')
-#
-# def keras_batch_generator(dataset_batch_generator, sim_thresh):
-#     while True:
-#         indices, pairs = next(dataset_batch_generator)
-#         distances = np.sqrt(np.square(pairs[:,0,:] - pairs[:,1,:]).sum(1))
-#         similar = (distances < sim_thresh).astype(int)
-#         yield pairs, similar
-#
-# # To see how this value was derived, please consult the Materials and Methods subsection under Feature Extraction section.
-# sim_thresh = 75
-# # Intuitively determined:
-# encoder_train_batch_size = 100
-# encoder_val_batch_size = 2500
-# predictor_train_batch_size = 1000
-
-
-# TODO: Yisong: Config for Text ...
-
-# print 'Loading training ... '
-# train_dataset = primo.datasets.OpenImagesTrain(
-#     '../data/open_sbert/train/', switch_every=10**5
-# )
-# print 'Loading validation ... '
-# val_dataset = primo.datasets.OpenImagesVal('../data/open_sbert/validation/')
-
 print 'Loading training ... '
 train_dataset = primo.datasets.OpenImagesTrain(
-    '../data/open_sbert/train-mpnet/', switch_every=10**5
+    '../data/open_images/train/', switch_every=10**5
 )
-print 'Loading validation ... '
-val_dataset = primo.datasets.OpenImagesVal('../data/open_sbert/validation-mpnet/')
 
+print 'Loading validation ... '
+val_dataset = primo.datasets.OpenImagesVal('../data/open_images/validation/')
 
 def keras_batch_generator(dataset_batch_generator, sim_thresh):
     while True:
@@ -65,11 +33,43 @@ def keras_batch_generator(dataset_batch_generator, sim_thresh):
         yield pairs, similar
 
 # To see how this value was derived, please consult the Materials and Methods subsection under Feature Extraction section.
-sim_thresh = 1.2
+sim_thresh = 75
 # Intuitively determined:
 encoder_train_batch_size = 100
 encoder_val_batch_size = 2500
 predictor_train_batch_size = 1000
+
+
+# TODO: Yisong: Config for Text ...
+
+# # print 'Loading training ... '
+# # train_dataset = primo.datasets.OpenImagesTrain(
+# #     '../data/open_sbert/train/', switch_every=10**5
+# # )
+# # print 'Loading validation ... '
+# # val_dataset = primo.datasets.OpenImagesVal('../data/open_sbert/validation/')
+#
+# print 'Loading training ... '
+# train_dataset = primo.datasets.OpenImagesTrain(
+#     '../data/open_sbert/train-mpnet/', switch_every=10**5
+# )
+# print 'Loading validation ... '
+# val_dataset = primo.datasets.OpenImagesVal('../data/open_sbert/validation-mpnet/')
+#
+#
+# def keras_batch_generator(dataset_batch_generator, sim_thresh):
+#     while True:
+#         indices, pairs = next(dataset_batch_generator)
+#         distances = np.sqrt(np.square(pairs[:,0,:] - pairs[:,1,:]).sum(1))
+#         similar = (distances < sim_thresh).astype(int)
+#         yield pairs, similar
+#
+# # To see how this value was derived, please consult the Materials and Methods subsection under Feature Extraction section.
+# sim_thresh = 1.2
+# # Intuitively determined:
+# encoder_train_batch_size = 100
+# encoder_val_batch_size = 2500
+# predictor_train_batch_size = 1000
 
 
 print 'Defining train batches creation'
@@ -102,7 +102,7 @@ encoder_trainer.model.compile(optimizer=tf.keras.optimizers.Adagrad(1e-3), loss=
 
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
 
-filepath = "../data/models/encoder_model-mpnet-{epoch:02d}-{val_loss:.2f}.hdf5"
+filepath = "../data/models/encoder_model-image-{epoch:02d}-{val_loss:.2f}.hdf5"
 mc = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=False, save_weights_only=False, mode='min')
 
 
@@ -130,8 +130,8 @@ if __name__ == '__main__':
     print 'Done'
 
     print 'Saving encoder'
-    encoder.save('../data/models/encoder_model-mpnet.h5')
+    encoder.save('../data/models/encoder_model-image.h5')
 
     print 'Saving predictor'
-    yield_predictor.save('../data/models/predictor_model-self-text-mpnet.h5')
+    yield_predictor.save('../data/models/predictor_model-image.h5')
 
