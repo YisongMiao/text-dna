@@ -30,14 +30,15 @@ cupyck_sess = cupyck.GPUSession(max_seqlen=200, nblocks=1024, nthreads=128)
 
 simulator = primo.models.Simulator(cupyck_sess)
 
-# target_seqs = pd.read_hdf('../data/extended_targets/feature_seqs.h5')
-target_seqs = pd.read_hdf('../data/targets/feature_seqs-text.h5')
+
+target_seqs = pd.read_hdf('../data/extended_targets/feature_seqs.h5')
+# target_seqs = pd.read_hdf('../data/targets/feature_seqs-text.h5')
 
 # (5577710, 1)
 # Column Name: 'FeatureSequence'
 
-# query_seqs = pd.read_hdf('../data/queries/feature_seqs.h5')
-query_seqs = pd.read_hdf('../data/queries/feature_seqs-text.h5')
+query_seqs = pd.read_hdf('../data/queries/feature_seqs.h5')
+# query_seqs = pd.read_hdf('../data/queries/feature_seqs-text.h5')
 # Shape: (3, 1)
 # Index([u'callie_janelle', u'luis_lego', u'yuan_taipei'], dtype='object')
 # OK. I should also design such structure.
@@ -61,9 +62,9 @@ nsplits = len(pairs) / split_size
 #
 # splits = splits[:2]
 
-splits = pairs
+splits = pairs[:4000]
 
-result_store = pd.HDFStore('../data/simulation/extended_targets/plain-self.h5', complevel=9, mode='w')
+result_store = pd.HDFStore('../data/simulation/extended_targets/replicate-self.h5', complevel=9, mode='w')
 
 try:
     # results = simulator.simulate(splits)
