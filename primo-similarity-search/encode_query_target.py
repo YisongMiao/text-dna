@@ -10,7 +10,7 @@ import primo.datasets
 from tqdm.notebook import tqdm
 
 
-encoder = primo.models.Encoder('../data/models/encoder_model-self-text.h5')
+encoder = primo.models.Encoder('../data/models/encoder_model-self-text-best.h5')
 
 query_features = pd.read_hdf('../data/queries/features-text.h5')
 
