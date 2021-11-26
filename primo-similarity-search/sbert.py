@@ -7,9 +7,12 @@ import h5py
 
 def emb_queries():
     queries = {
-        'plain': 'A plane is taking off.',
+        'plane': 'A plane is taking off.',
         'woman': 'A woman is peeling a potato.',
-        'cat': 'The cat is licking a bottle.'
+        'cat': 'The cat is licking a bottle.',
+        'steve': 'Steve Jobs is the CEO of Apple Inc. She hold many dollars of money.',
+        'CS': 'Computer science is one of the most revolutionary fields in scientific research.',
+        'model': 'The all-* models where trained on all available training data (more than 1 billion training pairs) and are designed as general purpose models.'
     }
 
     sentences_q = list(queries.values())
@@ -22,7 +25,7 @@ def emb_queries():
         index=sentences_index
     )
 
-    fp = 'features.h5'
+    fp = 'features-mpnet.h5'
     emb_df.to_hdf('../dna-data/{}'.format(fp), key='df')
     print('Dumped to {}'.format(fp))
 
@@ -65,7 +68,7 @@ def emb_sentences(sentences_all, index_list):
         index=index_list
     )
 
-    fp = 'targets.h5'
+    fp = 'targets-mpnet.h5'
     emb_df.to_hdf('../dna-data/{}'.format(fp), key='df')
     print('Dumped to {}'.format(fp))
 
@@ -78,7 +81,8 @@ def emb_sentences(sentences_all, index_list):
 
 if __name__ == '__main__':
     dataset = load_dataset("stsb_multi_mt", name="en", split="test")
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+    # model = SentenceTransformer('all-MiniLM-L6-v2')
+    model = SentenceTransformer('all-mpnet-base-v2')
 
     # dataset.num_rows
     # dataset['sentence1'] dataset['sentence2'] dataset['similarity_score']
