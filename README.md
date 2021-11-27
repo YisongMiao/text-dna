@@ -10,7 +10,7 @@ Our main modifications are in [primo-similarity-search](primo-similarity-search)
 
 
 
-Even though it seems Yisong make many commits in this repo, it is only a programming habit. He contributed equally with [Yihao](https://github.com/YihaoAng) in this course project in CS6219.
+Even though this git repo is under Yisong's name, he contributed equally with [Yihao](https://github.com/YihaoAng) in this course project in CS6219.
 
 
 
