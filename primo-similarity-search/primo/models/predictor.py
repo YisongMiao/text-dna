@@ -46,7 +46,7 @@ class Predictor:
 
         if model_path is None:
             self.model = tf.keras.Sequential([
-                local_interactions_layer(window_size=1, input_shape=[4,80,2]),
+                local_interactions_layer(window_size=1, input_shape=[4,40,2]),
                 layers.AveragePooling1D(3),
                 layers.Conv1D(36, 3, activation='tanh'),
                 layers.GlobalAveragePooling1D(),

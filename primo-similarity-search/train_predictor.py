@@ -16,7 +16,7 @@ simulator = primo.models.Simulator(cupyck_sess)
 
 # Generate 5,000 of these arbitrary sequence pairs
 # ...of length 80 nucleotides each (80 was chosen because that's the length of the DNA sequence's feature region in callie original paper).
-random_pairs, mut_rates = seqtools.random_mutant_pairs(5000, 80)
+random_pairs, mut_rates = seqtools.random_mutant_pairs(5000, 40)
 
 
 # From here, we take the first arbitrary sequence, and its mutation (i.e. the random pairs), then we pretend that the first arbitrary sequence (i.e. at index 0) is a target DNA sequence, then we pretend the second arbitrary sequence (i.e. at index 1) is a query DNA sequences.
@@ -36,8 +36,10 @@ history = predictor.train(onehot_seq_pairs, sim_results.duplex_yield, epochs=50,
 
 pred_yield = predictor.model.predict(onehot_seq_pairs)
 
+predictor.save('../data/models/yield-predictor-original-40.h5')
+
 
 if __name__ == '__main__':
     print 'done'
-    # OPK by Nov 21 6:19PM
+    # OK by Nov 21 6:19PM
 
