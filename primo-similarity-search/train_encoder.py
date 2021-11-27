@@ -94,7 +94,7 @@ print 'Models ...'
 predictor_train_batches = train_dataset.random_pairs(1000)
 
 encoder = primo.models.Encoder()
-# yield_predictor = primo.models.Predictor('../data/models/yield-model-40.h5')
+# yield_predictor = primo.models.Predictor('../data/models/yield-model.h5')
 yield_predictor = primo.models.Predictor('../data/models/yield-predictor-original-40.h5')
 encoder_trainer = primo.models.EncoderTrainer(encoder, yield_predictor)
 
