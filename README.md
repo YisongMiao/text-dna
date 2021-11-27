@@ -10,13 +10,18 @@ Our main modifications are in [primo-similarity-search](primo-similarity-search)
 
 
 
-Even though it seems Yisong make many commits in this repo, it is only a personal habit. He contributed equally with Yihao.
+Even though it seems Yisong make many commits in this repo, it is only a programming habit. He contributed equally with [Yihao](https://github.com/YihaoAng) in this course project in CS6219.
 
 
 
-## Ack
+## Acknowledgement 
 We want to thank UW MISL for their open-source codebases that facilitate this course project. https://github.com/uwmisl
 
 
 
 We also acknowledge Prof [Djordje Jevdjic](https://www.comp.nus.edu.sg/~jevdjic/) and TA Puru for their kind guidance for this project. 
+
+
+
+We also thank Mr Qingpeng Cai for his advice one bug with Keras. 
+
