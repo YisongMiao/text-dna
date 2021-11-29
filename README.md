@@ -23,5 +23,7 @@ We also acknowledge Prof [Djordje Jevdjic](https://www.comp.nus.edu.sg/~jevdjic/
 
 
 
+We also thank Mr [Xiachong Feng](http://xcfeng.net/) for his advice on text encoders. 
+
 We also thank Mr Qingpeng Cai for his advice one bug with Keras. 
 
