@@ -58,7 +58,7 @@ class Encoder:
         # Regularization penalty post softmax and helps prevent overfitting.
         # This value, 1e-2, was experimentally determined.
         # Since this encoder's output is a softmax, a valid range of regularization strength is between 0 and 1.
-        "entropy_reg_strength": 1e-2
+        "entropy_reg_strength": 1e-1
     }
 
     def __init__(self, model_path = None, **kwargs):
