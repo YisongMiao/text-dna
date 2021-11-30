@@ -3,13 +3,16 @@ from tensorflow.keras import layers
 
 import numpy as np
 import pandas as pd
+import tensorflow.keras.backend as k
+
 
 class EncoderTrainer:
 
-    def __init__(self, encoder, predictor):
+    def __init__(self, encoder, predictor, simulator):
 
         self.encoder = encoder
         self.predictor = predictor
+        self.simulator = simulator
 
         # Can't use the sequential Keras model anymore because we're combining two data streams (i.e. no longer strictly sequential).
         # Instead, we use the functional model.
@@ -91,8 +94,6 @@ class EncoderTrainer:
                 self.predictor.trainable(True)
                 history = self.predictor.train(onehot_seq_pairs, sim_results.duplex_yield, epochs=refit_epochs, verbose=0)
                 self.predictor.trainable(False)
-
-
 
                 print "predictor loss: %g" % history.history['loss'][-1]
 

@@ -65,6 +65,9 @@ if __name__ == '__main__':
     encoder_name = 'MiniLM'
     dataset_name = 'stsb'
 
+    encoder_name = 'mpnet'
+    dataset_name = 'snli'
+
     dataset_name_full = dataset_name
     if dataset_name == 'stsb':
         dataset_name_full = 'stsb_multi_mt'
@@ -118,7 +121,7 @@ if __name__ == '__main__':
 
     print 'model_save_dir: {}'.format(model_save_dir)
 
-    encoder_trainer = primo.models.EncoderTrainer(encoder, yield_predictor)
+    encoder_trainer = primo.models.EncoderTrainer(encoder, yield_predictor, simulator)
 
     print 'Compiling models ...'
     encoder_trainer.model.compile(optimizer=tf.keras.optimizers.Adagrad(1e-4), loss='binary_crossentropy',
@@ -136,7 +139,7 @@ if __name__ == '__main__':
     history = encoder_trainer.model.fit_generator(
         encoder_train_batches,
         # steps_per_epoch = 1000,
-        steps_per_epoch=100,  # TODO: Yisong, change for text ...
+        steps_per_epoch=500,  # TODO: Yisong, change for text ...
         epochs=100,
         callbacks=[
             encoder_trainer.refit_predictor(
