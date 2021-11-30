@@ -121,7 +121,7 @@ if __name__ == '__main__':
     encoder_trainer = primo.models.EncoderTrainer(encoder, yield_predictor)
 
     print 'Compiling models ...'
-    encoder_trainer.model.compile(optimizer=tf.keras.optimizers.Adagrad(1e-3), loss='binary_crossentropy',
+    encoder_trainer.model.compile(optimizer=tf.keras.optimizers.Adagrad(1e-4), loss='binary_crossentropy',
                                   metrics=['accuracy'])
 
     es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
