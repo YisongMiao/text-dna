@@ -9,7 +9,9 @@ from tqdm.notebook import tqdm
 import cupyck
 import time
 
-encoder = primo.models.Encoder('../data/models/encoder_model-self-text-mpnet.h5')
+# encoder = primo.models.Encoder('../data/models/encoder_model-self-text-mpnet.h5')
+encoder = primo.models.Encoder('../data/models/encoder_model-self-text.h5')
+
 
 query_features = pd.read_hdf('../data/queries/features-mpnet.h5')
 
@@ -32,15 +34,15 @@ simulator = primo.models.Simulator(cupyck_sess)
 
 
 # target_seqs = pd.read_hdf('../data/extended_targets/feature_seqs.h5')
-# target_seqs = pd.read_hdf('../data/targets/feature_seqs-text.h5')
-target_seqs = pd.read_hdf('../data/targets/feature_seqs-mpnet.h5')
+target_seqs = pd.read_hdf('../data/targets/feature_seqs-text.h5')
+# target_seqs = pd.read_hdf('../data/targets/feature_seqs-mpnet.h5')
 
 # (5577710, 1)
 # Column Name: 'FeatureSequence'
 
 # query_seqs = pd.read_hdf('../data/queries/feature_seqs.h5')
-# query_seqs = pd.read_hdf('../data/queries/feature_seqs-text.h5')
-query_seqs = pd.read_hdf('../data/queries/feature_seqs-mpnet.h5')
+query_seqs = pd.read_hdf('../data/queries/feature_seqs-text.h5')
+# query_seqs = pd.read_hdf('../data/queries/feature_seqs-mpnet.h5')
 
 # Shape: (3, 1)
 # Index([u'callie_janelle', u'luis_lego', u'yuan_taipei'], dtype='object')
