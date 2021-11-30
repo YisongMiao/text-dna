@@ -84,7 +84,10 @@ if __name__ == '__main__':
     val_dataset = primo.datasets.OpenImagesVal('../data/open_sbert/validation-{}-{}/'.format(dataset_name, encoder_name))
 
     # To see how this value was derived, please consult the Materials and Methods subsection under Feature Extraction section.
-    sim_thresh = 1.2
+
+    sim_thresh = 1.30
+    # For SNLI ?
+
     # Intuitively determined:
     encoder_train_batch_size = 100
     encoder_val_batch_size = 2500

@@ -49,7 +49,7 @@ class Encoder:
         #
         # TODO Yisong: A remark. OK. Here is where we change the dimensions.
         # "input_dim": 4096,
-        "input_dim": 768,
+        "input_dim": 384,
 
         # The feature region of our engineered DNA sequence is 80 nucleotides long.
         # If you use a shorter or longer DNA sequence for your data, you'll want to change this as well.
