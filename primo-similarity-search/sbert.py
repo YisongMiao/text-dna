@@ -3,16 +3,26 @@ from datasets import load_dataset
 import numpy as np
 import pandas as pd
 import h5py
+import json
+import pickle
+from pathlib import Path
 
 
-def emb_queries():
+path_sbert = '../../text-dna/data/open_sbert/'
+path_query = '../../text-dna/data/queries/'
+
+
+def emb_queries(fp):
     queries = {
         'plane': 'A plane is taking off.',
         'woman': 'A woman is peeling a potato.',
         'cat': 'The cat is licking a bottle.',
         'steve': 'Steve Jobs is the CEO of Apple Inc. She hold many dollars of money.',
         'CS': 'Computer science is one of the most revolutionary fields in scientific research.',
-        'model': 'The all-* models where trained on all available training data (more than 1 billion training pairs) and are designed as general purpose models.'
+        'model': 'The all-* models where trained on all available training data (more than 1 billion training pairs) and are designed as general purpose models.',
+        'church': 'The church has cracks in the top.',
+        'state': 'The statue is offensive and people are mad that it is on display.',
+        'symphony': 'A group of people are playing in a symphony.'
     }
 
     sentences_q = list(queries.values())
@@ -25,13 +35,17 @@ def emb_queries():
         index=sentences_index
     )
 
-    fp = 'features-mpnet.h5'
-    emb_df.to_hdf('../dna-data/{}'.format(fp), key='df')
+    emb_df.to_hdf('{}'.format(fp), key='df')
     print('Dumped to {}'.format(fp))
 
 
-def emb_sentences(sentences_all, index_list):
-    batch_size = 128
+def emb_sentences(sentences_all, index_list, dir, fp):
+    Path(dir).mkdir(parents=True, exist_ok=True)
+    save_fp = dir + '/' + fp
+
+    print(dir, save_fp)
+
+    batch_size = 256
 
     batch_count = int(len(sentences_all) / batch_size) + 1
 
@@ -41,7 +55,6 @@ def emb_sentences(sentences_all, index_list):
 
     embedding_list = []
 
-    prefix = 'train'
     for batch_num in range(batch_count):
         print('in batch {}'.format(batch_num))
         start = batch_num * batch_size
@@ -54,25 +67,16 @@ def emb_sentences(sentences_all, index_list):
         # numpy array, 128 * 384
         embedding_list.append(embeddings)
 
-        # Print the embeddings
-        # for sentence, embedding in zip(sentence_batch, embeddings):
-        #     print("Sentence:", sentence)
-        #     print("Embedding:", embedding)
-        #     print("")
-
-        # print('Done one batch')
-
     embeddings_all = np.concatenate(embedding_list)
     emb_df = pd.DataFrame(
         data=embeddings_all,
         index=index_list
     )
 
-    fp = 'targets-mpnet.h5'
-    emb_df.to_hdf('../dna-data/{}'.format(fp), key='df')
-    print('Dumped to {}'.format(fp))
+    emb_df.to_hdf('{}'.format(save_fp), key='df')
+    print('Dumped to {}'.format(save_fp))
 
-    emb_df_read = pd.read_hdf('../dna-data/{}'.format(fp), 'df')
+    emb_df_read = pd.read_hdf('{}'.format(save_fp), 'df')
 
     print('Loading ...')
     print('Done')
@@ -80,22 +84,73 @@ def emb_sentences(sentences_all, index_list):
 
 
 if __name__ == '__main__':
-    dataset = load_dataset("stsb_multi_mt", name="en", split="test")
-    # model = SentenceTransformer('all-MiniLM-L6-v2')
-    model = SentenceTransformer('all-mpnet-base-v2')
 
-    # dataset.num_rows
-    # dataset['sentence1'] dataset['sentence2'] dataset['similarity_score']
+    encoder_name = 'MiniLM'
+    dataset_name = 'stsb'
 
 
-    # Our sentences we like to encode
-    # sentences = ['This framework generates embeddings for each input sentence',
-    #              'Sentences are passed as a list of string.',
-    #              'The quick brown fox jumps over the lazy dog.']
+    if encoder_name == 'MiniLM':
+        model = SentenceTransformer('all-MiniLM-L6-v2').cuda()
+    elif encoder_name == 'mpnet':
+        model = SentenceTransformer('all-mpnet-base-v2').cuda()
 
-    sentences_all = dataset['sentence1'] + dataset['sentence2']
+    dataset_name_full = dataset_name
+    if dataset_name == 'stsb':
+        dataset_name_full = 'stsb_multi_mt'
 
-    index_list = ['sentence1-{}'.format(i) for i in range(len(dataset['sentence1']))] + ['sentence2-{}'.format(i) for i in range(len(dataset['sentence2']))]
+    dataset_train = load_dataset(dataset_name_full, name="en", split="train")
+    try:
+        dataset_valid = load_dataset(dataset_name_full, name="en", split="dev")
+    except:
+        dataset_valid = load_dataset(dataset_name_full, name="en", split="validation")
+    dataset_test = load_dataset(dataset_name_full, name="en", split="test")
 
-    emb_sentences(sentences_all, index_list)
-    # emb_queries()
+    dataset = load_dataset(dataset_name_full, name="en", split="test")
+
+    # For STSB
+    if dataset_name == 'stsb':
+        # ----- embed the query -----
+        fp = '{}features-{}-{}.h5'.format(path_query, dataset_name, encoder_name)
+        print(fp)
+        emb_queries(fp)
+
+        # ----- embed the feature vectors -----
+        sentences_all_train = dataset_train['sentence1'] + dataset_train['sentence2']
+        index_list_train = ['sentence1-{}'.format(i) for i in range(len(dataset_train['sentence1']))] + ['sentence2-{}'.format(i) for i in range(len(dataset_train['sentence2']))]
+        dir = path_sbert + 'train-' + dataset_name + '-' + encoder_name + '/features/'
+        fp = 'train.h5'
+        print(dir, fp)
+        emb_sentences(sentences_all_train, index_list_train, dir, fp)
+
+
+        sentences_all_valid = dataset_valid['sentence1'] + dataset_valid['sentence2']
+        index_list_valid = ['sentence1-{}'.format(i) for i in range(len(dataset_valid['sentence1']))] + ['sentence2-{}'.format(i) for i in range(len(dataset_valid['sentence2']))]
+        dir = path_sbert + 'validation-' + dataset_name + '-' + encoder_name + '/features/'
+        fp = 'validation.h5'
+        print(dir, fp)
+        emb_sentences(sentences_all_valid, index_list_valid, dir, fp)
+
+
+        sentences_all_test = dataset_test['sentence1'] + dataset_test['sentence2']
+        index_list_test = ['sentence1-{}'.format(i) for i in range(len(dataset_test['sentence1']))] + ['sentence2-{}'.format(i) for i in range(len(dataset_test['sentence2']))]
+        dir = path_sbert + 'targets' + '/features/'
+        fp = 'targets-{}-{}.h5'.format(dataset_name, encoder_name)
+        print(dir, fp)
+        emb_sentences(sentences_all_test, index_list_test, dir, fp)
+
+
+    # sentences_all = dataset['premise'] + dataset['hypothesis']
+    # index_list = ['premise-{}'.format(i) for i in range(len(dataset['premise']))] + ['hypothesis-{}'.format(i) for i in range(len(dataset['hypothesis']))]
+    # print('The length of index_list is: {}'.format(len(index_list)))
+
+    # d = dict()
+    # for i in range(len(index_list)):
+    #     d[index_list[i]] = sentences_all[i]
+    #
+    # with open('../dna-data/stsb-target.json', 'w') as f:
+    #     json.dump(d, f, indent=4)
+    #
+    # with open('../dna-data/stsb-target.pickle', 'wb') as f:
+    #     pickle.dump(d, f, protocol=2)
+    #
+    # print('Json dumped')
