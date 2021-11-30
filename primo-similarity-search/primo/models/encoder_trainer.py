@@ -82,6 +82,8 @@ class EncoderTrainer:
                 # simulate yields
                 sim_results = simulator.simulate(seq_pairs)
 
+                # TODO Yisong: Debug Purpose
+                print sim_results['duplex_yield'][:10]
                 # encode onehots
                 onehot_seq_pairs = self.predictor.seq_pairs_to_onehots(seq_pairs)
 
@@ -89,6 +91,8 @@ class EncoderTrainer:
                 self.predictor.trainable(True)
                 history = self.predictor.train(onehot_seq_pairs, sim_results.duplex_yield, epochs=refit_epochs, verbose=0)
                 self.predictor.trainable(False)
+
+
 
                 print "predictor loss: %g" % history.history['loss'][-1]
 
