@@ -62,11 +62,11 @@ def keras_batch_generator(dataset_batch_generator, sim_thresh):
 if __name__ == '__main__':
 
     # ----- config -----
-    encoder_name = 'MiniLM'
-    dataset_name = 'stsb'
+    # encoder_name = 'MiniLM'
+    # dataset_name = 'stsb'
 
-    # encoder_name = 'mpnet'
-    # dataset_name = 'snli'
+    encoder_name = 'mpnet'
+    dataset_name = 'stsb'
 
     dataset_name_full = dataset_name
     if dataset_name == 'stsb':
@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
     # To see how this value was derived, please consult the Materials and Methods subsection under Feature Extraction section.
 
-    sim_thresh = 1.2
+    sim_thresh = 1.3
     # For SNLI ?
 
     # Intuitively determined:

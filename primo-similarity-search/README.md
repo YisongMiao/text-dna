@@ -145,6 +145,78 @@ To see the queries, it is generated in [sbert.py](sbert.py).
 
 
 
+## Read Saved Data!
+
+Here is a small README to facilitate data mining!
+
+
+
+🔤 Query feature vector : `/text-dna/data/queries/features-stsb-MiniLM.h5`
+
+where `stsb` is dataset, `MiniLM` is language model,
+
+🔤 Target feature vector: `/text-dna/data/open_sbert/targets/features/targets-stsb-MiniLM.h5`
+
+the format is the same as above.
+
+
+
+🧬 Query DNA sequence: `/text-dna/data/queries/feature_seqs-stsb-MiniLM-0.h5`
+
+where `stsb` is dataset, `MiniLM` is language model, `0` is the training epoch of encoder training. 
+
+🧬 Target DNA sequence: `/text-dna/data/targets/feature_seqs-stsb-MiniLM-0.h5`
+
+the format is the same as above.
+
+
+
+**Parameters:**
+
+**Dataset:** `stsb`, `snli`. 
+
+**Language model:** `MiniLM`  (384 dim), `mpnet` (768 dim). 💡 **TODO: We can use XLNet and tf*idf.** 
+
+**Epoch:** 0~15. Generally will overfit on ~7th epoch (till Dec 2nd 2021). But it might also early stop. For example, `snli`+ `MiniLM` has been early stopped at 11th epoch, `stsb`+ `mpnet`has been early stopped at 12th epoch. 
+
+
+
+For a quick view: 
+
+```
+~/text-dna/data/queries$ l
+feature_seqs.h5                 feature_seqs-snli-mpnet-4.h5    feature_seqs-stsb-mpnet-0.h5
+feature_seqs-mpnet.h5           feature_seqs-snli-mpnet-5.h5    feature_seqs-stsb-mpnet-10.h5
+feature_seqs-snli-MiniLM-0.h5   feature_seqs-snli-mpnet-6.h5    feature_seqs-stsb-mpnet-11.h5
+feature_seqs-snli-MiniLM-10.h5  feature_seqs-snli-mpnet-7.h5    feature_seqs-stsb-mpnet-12.h5
+feature_seqs-snli-MiniLM-11.h5  feature_seqs-snli-mpnet-8.h5    feature_seqs-stsb-mpnet-1.h5
+feature_seqs-snli-MiniLM-1.h5   feature_seqs-snli-mpnet-9.h5    feature_seqs-stsb-mpnet-2.h5
+feature_seqs-snli-MiniLM-2.h5   feature_seqs-snli-mpnet.h5      feature_seqs-stsb-mpnet-3.h5
+feature_seqs-snli-MiniLM-3.h5   feature_seqs-stsb-MiniLM-0.h5   feature_seqs-stsb-mpnet-4.h5
+feature_seqs-snli-MiniLM-4.h5   feature_seqs-stsb-MiniLM-10.h5  feature_seqs-stsb-mpnet-5.h5
+feature_seqs-snli-MiniLM-5.h5   feature_seqs-stsb-MiniLM-11.h5  feature_seqs-stsb-mpnet-6.h5
+feature_seqs-snli-MiniLM-6.h5   feature_seqs-stsb-MiniLM-12.h5  feature_seqs-stsb-mpnet-7.h5
+feature_seqs-snli-MiniLM-7.h5   feature_seqs-stsb-MiniLM-13.h5  feature_seqs-stsb-mpnet-8.h5
+feature_seqs-snli-MiniLM-8.h5   feature_seqs-stsb-MiniLM-14.h5  feature_seqs-stsb-mpnet-9.h5
+feature_seqs-snli-MiniLM-9.h5   feature_seqs-stsb-MiniLM-15.h5  feature_seqs-text.h5
+feature_seqs-snli-mpnet-0.h5    feature_seqs-stsb-MiniLM-1.h5   features.h5
+feature_seqs-snli-mpnet-10.h5   feature_seqs-stsb-MiniLM-2.h5   features-mpnet.h5
+feature_seqs-snli-mpnet-11.h5   feature_seqs-stsb-MiniLM-3.h5   features-snli-MiniLM.h5
+feature_seqs-snli-mpnet-12.h5   feature_seqs-stsb-MiniLM-4.h5   features-snli-mpnet.h5
+feature_seqs-snli-mpnet-13.h5   feature_seqs-stsb-MiniLM-5.h5   features-stsb-MiniLM.h5
+feature_seqs-snli-mpnet-14.h5   feature_seqs-stsb-MiniLM-6.h5   features-stsb-mpnet.h5
+feature_seqs-snli-mpnet-15.h5   feature_seqs-stsb-MiniLM-7.h5   features-text.h5
+feature_seqs-snli-mpnet-1.h5    feature_seqs-stsb-MiniLM-8.h5   images/
+feature_seqs-snli-mpnet-2.h5    feature_seqs-stsb-MiniLM-9.h5   targets-text.h5
+feature_seqs-snli-mpnet-3.h5    feature_seqs-stsb-MiniLM.h5
+```
+
+
+
+
+
+---
+
 
 
 ## More about Data!

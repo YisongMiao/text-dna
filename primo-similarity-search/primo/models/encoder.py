@@ -52,7 +52,7 @@ class Encoder:
         #
         # TODO Yisong: A remark. OK. Here is where we change the dimensions.
         # "input_dim": 4096,
-        "input_dim": 384,
+        "input_dim": 768,
 
         # The feature region of our engineered DNA sequence is 80 nucleotides long.
         # If you use a shorter or longer DNA sequence for your data, you'll want to change this as well.
@@ -61,7 +61,7 @@ class Encoder:
         # Regularization penalty post softmax and helps prevent overfitting.
         # This value, 1e-2, was experimentally determined.
         # Since this encoder's output is a softmax, a valid range of regularization strength is between 0 and 1.
-        "entropy_reg_strength": 5e-2
+        "entropy_reg_strength": 2e-2
     }
 
     def __init__(self, model_path = None, **kwargs):
