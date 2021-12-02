@@ -8,6 +8,7 @@ import primo.models
 import primo.datasets
 
 from tqdm.notebook import tqdm
+from tensorflow.keras.models import load_model
 
 
 
@@ -24,11 +25,19 @@ if __name__ == '__main__':
         dataset_name_full = 'stsb_multi_mt'
 
     model_save_dir = '../data/models/{}-{}'.format(dataset_name, encoder_name)
-    fp = model_save_dir + '/' + 'encoder-final.h5'
+    # fp = model_save_dir + '/' + 'encoder-final.h5'
+    fp = model_save_dir + '/' + 'encoder_model-03-0.06.h5'
+    fp = model_save_dir + '/' + '10.h5'
 
     encoder = primo.models.Encoder(fp)
 
+    # encoder = load_model(fp)
+
+    # return seqtools.onehots_to_seqs(onehots)
+
     query_features = pd.read_hdf('../data/queries/features-{}-{}.h5'.format(dataset_name, encoder_name))
+    # tf.keras.backend.expand_dims(query_features,axis=0)
+    # onehots = encoder.predict(query_features)
 
     query_seqs = encoder.encode_feature_seqs(query_features)
 

@@ -12,11 +12,11 @@ import time
 
 
 if __name__ == '__main__':
-    encoder_name = 'MiniLM'
-    dataset_name = 'stsb'
+    # encoder_name = 'MiniLM'
+    # dataset_name = 'stsb'
 
-    # encoder_name = 'mpnet'
-    # dataset_name = 'snli'
+    encoder_name = 'mpnet'
+    dataset_name = 'snli'
 
     dataset_name_full = dataset_name
     if dataset_name == 'stsb':

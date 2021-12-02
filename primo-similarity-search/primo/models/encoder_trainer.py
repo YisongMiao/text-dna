@@ -59,7 +59,7 @@ class EncoderTrainer:
         self.predictor.trainable(False)
 
 
-    def refit_predictor(self, predictor_batch_generator, simulator, refit_every = 1, refit_epochs = 10):
+    def refit_predictor(self, predictor_batch_generator, simulator, model_save_dir, refit_every = 1, refit_epochs = 10):
         """Generate a callback function to refit the yield predictor during encoder training.
 
         Arguments:
@@ -70,6 +70,7 @@ class EncoderTrainer:
         """
 
         def callback(epoch, logs):
+            # TODO: Yisong: We can insert here!
             if epoch % refit_every == 0:
                 print
                 print "refitting..."
@@ -96,5 +97,11 @@ class EncoderTrainer:
                 self.predictor.trainable(False)
 
                 print "predictor loss: %g" % history.history['loss'][-1]
+
+                self.encoder.trainable(False)
+                fp = model_save_dir + '/' + '{}.h5'.format(epoch)
+                print 'Saving encoder ... fp is: {}'.format(fp)
+                self.encoder.save(fp)
+                self.encoder.trainable(True)
 
         return tf.keras.callbacks.LambdaCallback(on_epoch_end=callback)

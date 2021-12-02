@@ -65,8 +65,8 @@ if __name__ == '__main__':
     encoder_name = 'MiniLM'
     dataset_name = 'stsb'
 
-    encoder_name = 'mpnet'
-    dataset_name = 'snli'
+    # encoder_name = 'mpnet'
+    # dataset_name = 'snli'
 
     dataset_name_full = dataset_name
     if dataset_name == 'stsb':
@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
     # To see how this value was derived, please consult the Materials and Methods subsection under Feature Extraction section.
 
-    sim_thresh = 1.30
+    sim_thresh = 1.2
     # For SNLI ?
 
     # Intuitively determined:
@@ -146,10 +146,10 @@ if __name__ == '__main__':
         epochs=100,
         callbacks=[
             encoder_trainer.refit_predictor(
-                predictor_train_batches, simulator, refit_every=1, refit_epochs=10
+                predictor_train_batches, simulator, model_save_dir, refit_every=1, refit_epochs=10
             ),
             es,
-            mc
+            # mc
         ],
         validation_data=encoder_val_batches,
         validation_steps=1,

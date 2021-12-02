@@ -5,6 +5,9 @@ from tensorflow.keras import layers
 
 from . import _default_sequences
 from ..tools import sequences as seqtools
+from tensorflow.keras.models import load_model
+
+
 
 def entropy_regularizer(strength):
 
@@ -119,4 +122,6 @@ class Encoder:
     
     def save(self, model_path):
         self.model.save(model_path)
-    
+
+    def load(self, model_path):
+        self.model = load_model(model_path)
